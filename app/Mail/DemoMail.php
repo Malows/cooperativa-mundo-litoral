@@ -2,7 +2,6 @@
 
 namespace App\Mail;
 
-use App\Message;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -20,7 +19,7 @@ class DemoMail extends Mailable
      *
      * @return void
      */
-    public function __construct(Message $messages)
+    public function __construct($messages)
     {
         $this->messages = $messages;
     }
@@ -38,6 +37,7 @@ class DemoMail extends Mailable
 
         return $this->from($remitent)
             ->subject("Resumen de mensajes ($count) - $dateString")
-            ->view('mails.digest');
+            ->view('mails.digest')
+            ->with(['messages' => $this->messages]);
     }
 }

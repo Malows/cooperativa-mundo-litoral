@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Mail\TestMail;
 use Mail;
 use App\Mail\DemoMail;
 use App\Message;
@@ -14,7 +15,9 @@ class SendEmail extends Command
      *
      * @var string
      */
-    protected $signature = 'send:email';
+    protected $signature = 'send:email
+        {--dry-run : No elimina mensajes}
+        {--T|test= : Prueba enviar un correo}';
 
     /**
      * The console command description.
@@ -40,6 +43,10 @@ class SendEmail extends Command
      */
     public function handle()
     {
+        if ($this->option('test')) {
+            return Mail::to($this->option('test'))->send(new TestMail);
+        }
+
         $messages = Message::all();
 
         if ($messages->count() == 0) {
@@ -47,8 +54,10 @@ class SendEmail extends Command
             return null;
         }
 
-        Mail::send(new DemoMail($messages));
+        Mail::to(env('EMAIL_ADDRESS'))->send(new DemoMail($messages));
 
-        Message::destroy($messages->pluck('id'));
+        if (! $this->option('dry-run')) {
+            Message::destroy($messages->pluck('id'));
+        }
     }
 }
