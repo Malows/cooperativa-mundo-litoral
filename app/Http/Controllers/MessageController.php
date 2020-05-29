@@ -11,6 +11,7 @@ class MessageController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -20,8 +21,7 @@ class MessageController extends Controller
 
         if ($matches) {
             return Message::create($request->all());
-        } else {
-            return response(['message' => 'Not allowed agent'], 400);
         }
+        return response(['message' => 'Not allowed agent'], 400);
     }
 }

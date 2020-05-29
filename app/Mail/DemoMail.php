@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class DemoMail extends Mailable
 {
@@ -36,7 +35,7 @@ class DemoMail extends Mailable
         $dateString = Carbon::now()->subDay()->toDateString();
 
         return $this->from($remitent)
-            ->subject("Resumen de mensajes ($count) - $dateString")
+            ->subject("Resumen de mensajes (${count}) - ${dateString}")
             ->view('mails.digest')
             ->with(['messages' => $this->messages]);
     }

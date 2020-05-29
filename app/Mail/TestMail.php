@@ -5,7 +5,6 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class TestMail extends Mailable
 {
@@ -18,7 +17,6 @@ class TestMail extends Mailable
      */
     public function __construct()
     {
-        //
     }
 
     /**
@@ -31,7 +29,7 @@ class TestMail extends Mailable
         $remitetnt = env('MAIL_USERNAME');
 
         return $this->from($remitetnt)
-            ->subject("Prueba de correos")
+            ->subject('Prueba de correos')
             ->view('mails.test');
     }
 }

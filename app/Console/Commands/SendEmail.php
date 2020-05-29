@@ -2,11 +2,11 @@
 
 namespace App\Console\Commands;
 
-use App\Mail\TestMail;
-use Mail;
 use App\Mail\DemoMail;
+use App\Mail\TestMail;
 use App\Message;
 use Illuminate\Console\Command;
+use Mail;
 
 class SendEmail extends Command
 {
@@ -27,16 +27,6 @@ class SendEmail extends Command
     protected $description = 'Send the email digest to the target user';
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
      * Execute the console command.
      *
      * @return mixed
@@ -44,12 +34,12 @@ class SendEmail extends Command
     public function handle()
     {
         if ($this->option('test')) {
-            return Mail::to($this->option('test'))->send(new TestMail);
+            return Mail::to($this->option('test'))->send(new TestMail());
         }
 
         $messages = Message::all();
 
-        if ($messages->count() == 0) {
+        if ($messages->count() === 0) {
             $this->info("There isn't any message left to send.");
             return null;
         }
